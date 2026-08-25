@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .bg-gradient-custom {
+            background: linear-gradient(135deg, #e052a0 0%, #f15a24 50%, #7928ca 100%);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(to right, #ff7e5f, #b83280);
+        }
+
+        .btn-gradient:hover {
+            background: linear-gradient(to right, #eb6b4c, #a1236d);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-custom min-h-screen flex items-center justify-center p-4">
+
+    <!--CARTE DE CONNEXION-->
+    <div class="w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden grid 
+    grid-cols-1 md:grid-cols-2">
+
+        <!--PARTIE GAUCHE : DISIGN ABSTRAIT ORGANIQUE-->
+        <div class="relative bg-white hidden md:flex items-center justify-center p-6 
+        overflow-hidden min-h-[380px]">
+
+            <!--DESIGN ABSTRAIT ORGANIQUE-->
+            <div class="absolute-left-12 -top-12 w-48 h-48 rounded-full bg-gradient-to-br 
+            from-pink-500 to-purple-600
+            opacity-90"></div>
+            <div class="absolute-left-16 -top-16 w--64 h-64 rounded-[40%] bg-gradient-to-tr 
+            from-purple-600 via-pink-500
+            to-amber-400 opacity-80 border-8 border-purple-100"></div>
+            <div class="absolute -bottom-4 left-10 w-36 h-36 rounded-full bg-gradient-to-r
+            from-amber-400 to-pink-500 opacity-80"></div>
+            <div class="absolute -bottom-10 -left-6 w-32 h-32 rounded-full bg-gradient-to-br
+            from-purple-600 to-pink-500 opacity-80"></div>
+
+            <!--Message d'erreur SPRING SECURITY-->
+            <div th:if="${param.error}" class="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 
+            rounded-xl text-xs text-center">Identifiants incorrects</div>
+
+            <form th:action="@{/login}" method="post" class="flex flex-col gap-4">
+
+                <!--CHAMP NOM D'UTILISATEUR-->
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                        <i class="fa-solid fa-user text-sm"></i>
+                    </span>
+                    <input type="text" name="username" placeholder="Nom d'utilisateur"
+                        class="w-full bg-slate-100 border border-transparent rounded-full py-3 pl-11
+                        pr-4 text-sm text-slate-700 placeholder-slate-400 
+                        focus:outline-none 
+                        focus:border-pink-500
+                        focus:bg-white transition"/>
+                </div>
+
+                <!--CHAMP MOT DE PASSE-->
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                        <i class="fa-solid fa-lock text-sm"></i>
+                    </span>
+                    <input type="password" name="password" placeholder="Mot de passe"
+                        class="w-full bg-slate-100 border border-transparent rounded-full py-3 pl-11
+                        pr-4 text-sm text-slate-700 placeholder-slate-400 
+                        focus:outline-none 
+                        focus:border-pink-500
+                        focus:bg-white transition"/>
+                </div>
+
+                <!--BOUTON DE CONNEXION-->
+                <button type="submit"
+                    class="btn-gradient text-white font-semibold py-3 rounded-full shadow-lg
+                    transition duration-200 mt-2 text-sm tracking-wider uppercase">
+                    Se connecter
+                </button>
+            </form>
+        </div>
+
+</body>
+
+</html>

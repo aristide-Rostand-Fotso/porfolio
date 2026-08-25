@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porfolio Professionel</title>
+
+    <!---GOOGLE FONTS (PLUS JAKARTA SANS)-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;
+    600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@2.15.1/devicon.min.css" />
+
+    <!--TAILWIND CSS-->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = {
+            theme: {
+                extends: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!--FONTAWESOME 6-->
+    <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" />
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased relative overflow-x-hidden">
+    <!--MOTIFS BULLES FLOUES ARRIERE PLAN-->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-10 left-10 w-72 h-72 bg-sky-200/50 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/3 right-10 w-96 h-96 bg-blue-200/40 rounded-ful blur-3xl"></div>
+        <div class="absolute bottom-10 left1/4 w-80 h-80 bg-teal-100/60 rounded-full blur-3xl"></div>
+    </div>
+
+    <!--NAVBAR FLOTTANTANTE GELULE-->
+    <header class="fixed top-5 inset-x-0 z-50 flex justify-center px-4">
+        <nav class="bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-lg shadow-slate-200/50 rounded-full 
+             px-6 py-3 flex items-center justify-between w-full max-w-5xl relative">
+
+            <!--logo-->
+            <a href="#acceuil" class="text-xl font-extrabold text-slate-900 tracking-tight">Porfolio <span
+                    class="text-sky-500">.</span>
+            </a>
+
+            <!--btn hamburger (visible uniquement sur mobile)-->
+            <button onclick="toggleMenu()" class="md:hidden text-slate-700 hover:text-sky-500 
+            focus:outline-none p-2 roundec-lg z-50">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+
+            <!--Lien de navigation-->
+            <div id="menu-links"
+                class="hidden absolute top-16 left-0 w-full bg-white border border-slate-200
+            rounded-2xl p-5 flex-col gap-4 shadow-xl md:!flex md:relative md:top-0 md:left-0 md:w-auto
+            md:transparent md:border-0 md:p-0 md:shadow-none md:flex-row md:space-x-6 text-sm font-medium text-slate-600">
+                <a href="#acceuil"
+                    class="nav-link px-3 py-1.5 rounded-full  transition-all text-red-500 font-bold bg-red-50">Accueil</a>
+                <a href="#a-propos" class="nav-link px-3 py-1.5 rounded-full transition-all hover:text-red-500">À
+                    propos</a>
+                <a href="#formation"
+                    class="nav-link px-3 py-1.5 rounded-full transition-all hover:text-red-500 ">Formation</a>
+                <a href="#projets" class="nav-link px-3 py-1.5 rounded-full transition-all hover:text-red-500 ">Mes
+                    Projets</a>
+                <a href="#contact"
+                    class="nav-link px-3 py-1.5 rounded-full transition-all hover:text-red-500 ">Contact</a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <a th:if="${cvExist}" th:href="@{/cv/download}" class="px-4 py-2rounded-full bg-sky-500
+                    hover:bg-sky-600 text-white font-semibold text-xs sm:text-sm transition-all 
+                    shadow-md shadow-sky-500/20 flex items-center gap-2">
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                    Mon CV
+                </a>
+
+                <button th:unless="${cvExist}" disabled class="px-4 py-2 rounded-full bg-slate-200
+                   text-slate-400 font-semibold text-xs sm:text-sm cursor-not-allowed flex items-center gap-2">
+                    <i class="fa-solid fa-file-circle-xmark"></i>Aucun CV disponible
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!---SECTION ACCEUIL-->
+    <section id="acceuil"
+        class="snap-start min-h-screen pt-36 pb-20 flex-items-center justify-center relative z-10 px-4">
+        <div class="max-w-6xl mx-auto flex flex-row  items-center justify-between gap-3 sm:gap-6 md:gap-12">
+
+            <!--CONTENU TEXTE  & BTN-->
+            <div class=" w-[60%] sm:w-[65%] md:w-auto flex-1 text-left">
+                <h1 class="text-sm sm:text-2xl md:text-5xl lg:text-6xl font-extrabold
+                 text-slate-900 leading-tight mb-2 md:mb-4 tracking-tight
+                    ">Salut, je suis
+                    <span class="text-sky-500" th:text="${userProfile.fullName}">
+                        Aristide fotso
+                    </span>
+                    <span class="text-slate-900" th:text="${userProfile.title}">Genie logiciel/Software Engineer</span>
+                </h1>
+
+                <p class="text-[10px] sm:text-base md:text-2xl text-sky-500 font-semibold 
+                max-w-xl mb-3 md:mb-8 leading-relaxed text-justify" th:text="${userProfile.shortBio}">Developpeur
+                    Fullstack</p>
+
+                <!--BTN D'ACTION-->
+                <div class="flex flex-wrap items-center justify-start gap-2 md:gap-4 mb-4 md:mb-8">
+                    <a th:if="${cv != null}" th:href="@{/cv/download}" class="px-3 py-1.5 md:px-6 md:y-3 
+                    rounded-full bg-sky-500 hover:bg-sky-600 
+                    text-white font-semibold text-[10px] sm:text-xs md:text-sm transition-all 
+                        shadow-lg shadow-sky-500/25 flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-arrow-down"></i>
+                        Télécharger CV
+                    </a>
+                    <span th:unless="${cv != null}" class="text-xs text-slate-400 italic">Aucun CV disponible</span>
+
+                    <a href="#contact" class="px-3 py-1.5  md:px-6 md:py-3 rounded-full border border-sky-500 
+                    text-sky-600 hover:bg-sky-50  
+                    font-semibold text-[10px] sm:text-xs md:text-sm  transition-all">Me contacter</a>
+                </div>
+
+                <!---LIEN RS-->
+                <div class="flex justify-start space-x-2 sm:space-x-4 md:space-x-5 text-sm sm:text-base
+                 md:text-xl text-slate-400">
+                    <a th:href="${userProfile != null and userProfile.githubUrl != null ? userProfile.githubUrl : '#'}"
+                        target="_blank" title="Github" class="w-11 h-11 bg-white border border-slate-200 rounded-full text-slate-800 hover:text-sky-500
+                    hover:border-sky-500 transition-all shadow-sm flex items-center justify-center">
+                        <i class="fa-brands fa-github  text-sm sm:text-base md:text-xl"></i>
+                    </a>
+
+                    <a th:href="${userProfile != null and userProfile.linkedinUrl != null ? userProfile.linkedinUrl : '#'}"
+                        target="_blank" title="LinkedIn" class="w-11 h-11 bg-white border border-slate-200 rounded-full text-blue-600 
+                    hover:border-blue-600 transition-all shadow-sm flex items-center justify-center">
+                        <i class="fa-brands fa-linkedin-in text-sm sm:text-base md:text-xl"></i>
+                    </a>
+
+                    <a th:href="${userProfile != null and userProfile.instagramUrl != null ? userProfile.instagramUrl : '#'}"
+                        target="_blank" title="Instagram" class="w-11 h-11 bg-white border border-slate-200 rounded-full text-pink-500 hover:border-pink-500
+                     transition-all shadow-sm flex items-center justify-center">
+                        <i class="fa-brands fa-instagram text-sm sm:text-base md:text-xl"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!---Photo avec boeder rond cyan et competence en orbite-->
+            <div class="relative flex justify-center items-center w-[40%] sm:w-[35%] md:w-auto">
+                <div class="w-32 h-32 sm:w-60 sm:h-60 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full border-2 md:border-4 border-sky-400/80 
+                shadow-xl shadow-sky-200 flex items-center justify-center p-3 relative bg-white/40 backdrop-blur-sm">
+
+                    <!--CADRE DE LA PHOTO-->
+                    <div class="w-full h-full rounded-full overflow-hidden bg-slate-100 flex items-center 
+                    justify-center">
+                        <img th:if="${userProfile != null and userProfile.profilePhotopath != null and 
+                        !#strings.isEmpty(userProfile.profilePhotopath)}" th:src="@{${userProfile.profilePhotopath}}"
+                            alt="photo de profil" onclick="ouvrirModale(this.src)" class="w-full h-full object-cover cursor-pointer hover:scale-105 
+                            transition-transform duration-300" />
+
+                        <div th:unless="${userProfile != null and userProfile.profilePhotopath != null and 
+                        !#strings.isEmpty(userProfile.profilePhotopath)}" class="text-center p-4">
+                            <i class="fa-solid fa-user text-4xl text-slate-300 mb-2"></i>
+                            <p class="text-xs font-medium text-slate-400">Aucune Photo Disponible</p>
+                        </div>
+                    </div>
+
+                    <!---PASTILLE DE COMPETENCE EN ARRONDI EN ORBITE-->
+                    <div class="absolute -top-2 sm:-top-5 left-1/2 -translate-x-1/2 bg-white shadow-md rounded-full 
+                    w-7 h-7 sm:w-12 sm:h-12
+                    flex items-center justify-center text-xs sm:text-2xl z-20">
+                        <i class="devicon-java-plain colored"></i>
+                    </div>
+
+                    <div class="absolute top-1/4 -right-2 sm:-right-4  bg-white shadow-md rounded-full 
+                    w-7 h-7 sm:w-12 sm:h-12
+                 flex items-center justify-center text-xs sm:text-2xl z-20">
+                        <i class="devicon-spring-plain colored"></i>
+                    </div>
+
+                    <div class="absolute bottom-1/4 -right-2  sm:right-4 bg-white shadow-md rounded-full w-7 h-7 sm:w-12
+                    sm:h-12  flex items-center justify-center text-xs sm:text-xl z-20">
+                        <i class="devicon-docker-plain colored"></i>
+                    </div>
+                    <div class="absolute -bottom-2 sm:-bottom-5  left-1/2 -translate-x-1/2 bg-white 
+                    shadow-md rounded-full w-7 h-7 sm:w-12 sm:h-12
+                    flex items-center justify-center text-xs sm:text-xl z-20">
+                        <i class="devicon-javascript-plain colored"></i>
+                    </div>
+                    <div class="absolute top-1/2 -left-2 sm:-left-4 -translate-y-1/2 
+                    bg-white shadow-md rounded-full w-7 h-7 sm:w-12 sm:h-12 
+                 flex items-center justify-center text-xs sm:text-xl z-20">
+                        <i class="devicon-mysql-plain colored"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+    <!--GOOGLE FONT POUR LA SIGNATURE MANUSCRITE-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&family=Great+Vibes
+    &display=swap">
+
+    <!--SECTION 2 A PROPOS (STYLE MAQUETTE)-->
+    <section id="a-propos" class="snap-start min-h-screen pt-28 pb-16 flex items-center 
+    justify-center relative z-10 px-6 bg-[#f4f1ea] text-slate-800">
+
+        <div class="max-w-5xl mx-auto w-full flex flex-col gap-12">
+
+            <!--BARRE DU HAUT INFOS PERSONNELLES-->
+            <div class="grid grid-cols-3 gap-2 sm:gap-6 text-center border-b 
+                border-slate-300/60 pb-8 w-full min-w-0">
+                <div>
+                    <span class="block text-xs uppercase tracking-wider text-slate-500 
+                    font-medium mb-1">Lieu de
+                        Naissance</span>
+                    <p class="text-xs sm:text-base font-bold text-slate-900 flex  flex-col sm:flex-row
+                    items-center justify-center gap-1 sm:gap-2">
+                        <img src="https:flagcdn.com/24x18/cm.png" alt="rounded">
+                        <span th:text="${about != null ?
+                         about.birthPlaceDisplay : 'Non renseigné'}"> Cameroun</span>
+                    </p>
+                </div>
+
+                <div>
+                    <span class="block text-xs uppercase tracking-wider text-slate-500 
+                        font-medium mb-1">Expérience</span>
+                    <p class="text-base font-bold text-slate-900"
+                        th:text="${about != null ? about.experienceYearsDisplay :'Non renseigné'}">
+                        7+ Years
+                    </p>
+                </div>
+
+                <div>
+                    <span class="block text-xs uppercase tracking-wider text-slate-500 
+                    font-medium mb-1">Date de
+                        Naissance & Âge </span>
+                    <p class="text-base font-bold text-slate-900">
+                        <span th:text="${about != null and about.birthDate != null ? 
+                            about.formattedBirthDate
+                             : 'Non renseigné'}">23ans</span>
+                        <span th:if="${about != null and about.birthDate != null }"
+                            class="text-sm font-normal text-slate-600"
+                            th:text="${'(' + about.calculatedAge + ')'}">21ans</span>
+                    </p>
+                </div>
+            </div>
+
+            <!--TITRE -->
+            <h2 class="text-5xl sm:text-6xl font-serif text-slate-900 text-center 
+            tracking-tight">À Propos</h2>
+
+            <!--CORPS: METRIQUES A GAUCHE + BIO & SIGNATURE A dROITE-->
+            <div class="flex flex-row md:grid md:grid-cols-12 gap-4 md:gap-8 w-full min-w-0">
+
+                <!--COLONNE GAUCHE -->
+                <div class="w-[35%] shrink-0 md:w-full md:col-span-5 flex flex-col gap-4 md:gap-8 text-center 
+                md:text-right items-center md:items-end
+                md:border-r md:border-slate-300/60 md:pr-8">
+
+                    <!---PROJET REUSSIS-->
+                    <div>
+                        <i class="fa-solid fa-briefcase text-slate-400 text-lg mb-1"></i>
+                        <p class="text-3xl font-extrabold text-slate-900" th:text="${about != null and 
+                            about.successfulProjects != null ? 
+                    about.successfulProjects : '0'}">124</p>
+                        <span class="text-xs uppercase tracking-wider text-slate-500 font-semibold">Projets
+                            Réussis</span>
+                    </div>
+
+                    <!--CLIENTS SATISFAITS-->
+                    <div>
+                        <i class="fa-solid fa-face-smile text-slate-400 text-lg mb-1"></i>
+                        <p class="text-3xl font-extrabold text-slate-900" th:text="${about != null and 
+                            about.happyClients != null ?
+                    about.happyClients : '0'}">65</p>
+                        <span class="text-xs uppercase tracking-wider text-slate-500 font-semibold">Clients
+                            Satisfaits</span>
+                    </div>
+
+                    <!--STATUT FREELANCE-->
+                    <div class="pt-2">
+                        <span
+                            class="text-xs uppercase tracking-wider text-slate-500 font-semibold block mb-1">Disponible
+                            en Freelance ?</span>
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold" th:classappend="${about != 
+                            null and about.isFreelance == true} ?
+                    'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'" th:text="${about != null and about.isFreelance != null ? (about.isFreelance ? 'Oui' : 'Non') 
+                            : 'Non renseigné'} ">Oui</span>
+                    </div>
+                </div>
+
+                <!--COLONNE DROITE-->
+                <!--BIOGRAPHIE-->
+                <div class="w-[65%] md:w-full md:col-span-7 flex flex-col gap-4">
+                    <p th:if="${about != null and about.bioDescription != null and 
+                        ! about.bioDescription.isBlank()}" class="text-[10px] sm:text-xs md:text-base text-slate-700 leading-snug 
+                        break-words text-justify md:text-left" th:text="${about.bioDescription}">
+                    </p>
+                    <p th:unless="${about != null and about.bioDescription !=null and !
+                about.bioDescription.isBlank()}" class="italic text-slate-400 break-words 
+                max-w-full text-center md:text-left">Aucune description n'a ete saisie pour
+                        le moment
+                    </p>
+
+                    <!--ZONE DE SIGNATURE MANUSCRITE-->
+                    <div class="pt-6 flex flex-col items-center md:items-start gap-2">
+                        <span class="text-xs uppercase tracking-wider text-slate-400 font-medium">Signature</span>
+                        <p class="text-4xl text-slate-400 select-none" style="font-family: 'Great Vibes', 
+                    'Reenie Beanie',
+                     cursive;" th:text="${about != null and about.signatureText != null and ! 
+                     about.signatureText.isBlank() ? 
+                     about.signatureText : 'Non renseigné'}"> Aristide
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!---BLOC DES 3 CARTES-->
+            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-6  my-2 ">
+
+                <!---CARTE1 STACK TITRE DYNAMIQUE + DESCRIPTION-->
+                <div class="bg-[#18181b] border border-slate-800 rounded-lg p-5 flex items-start 
+                    gap-4 text=left w-full min-w-0 shadow-md">
+                    <div class="border border-amber-500/30 bg-amber-500/10 p-2.5 rounded 
+                        text-amber-400 
+                        text-sm flex-shrink-0">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+
+
+                    <div class="w-full min-w-0">
+                        <h3 class="text-white font-serif font-semibold text-lg tracking-wide 
+                            mb-1" th:text="${about != null and about.stackTitle != null and !
+                        about.stackTitle.isBlank() ? about.stackTitle : 'stack non renseigné'}"></h3>
+
+                        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed break-words" th:text="${about != null and about.stackDescription != null and !
+                        about.stackDescription.isBlank() ? about.stackDescription : 'non renseigné'}"></p>
+                    </div>
+                </div>
+
+                <!--CARTE2 SOLUTIONS SUR MESURE-->
+                <div class="bg-[#18181b] border border-slate-800 rounded-lg p-5 flex items-start 
+                    gap-4 text=left w-full min-w-0 shadow-md">
+                    <div class="border border-amber-500/30 bg-amber-500/10 p-2.5 rounded 
+                        text-amber-400 
+                        text-sm flex-shrink-0">
+                        <i class="fa-solid fa-crosshairs"></i>
+                    </div>
+
+                    <div class="w-full min-w-0">
+                        <h3 class="text-white font-serif font-semibold text-lg tracking-wide mb-1">
+                            Solutions sur mesure
+                        </h3>
+                        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed break-words" th:text="${about != null and about.customSolutionsDescription != null
+                            and !about.customSolutionsDescription.isBlank() ?
+                        about.customSolutionsDescription : 'non renseigné'}">Je concois</p>
+                    </div>
+                </div>
+
+                <!--CARTE 3 VEILLE CONTINUE-->
+                <div class="bg-[#18181b] border border-slate-800 rounded-lg p-5 flex items-start 
+                    gap-4 text=left w-full min-w-0 shadow-md">
+                    <div class="border border-amber-500/30 bg-amber-500/10 p-2.5 rounded 
+                        text-amber-400 
+                        text-sm flex-shrink-0">
+                        <i class="fa-regular fa-lightbulb"></i>
+                    </div>
+
+                    <div class="w-full min-w-0">
+                        <h3 class="text-white font-serif font-semibold text-lg tracking-wide mb-1">
+                            Veille continue</h3>
+                        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed break-words" th:text="${about != null and about.continuousWatchDescription != null
+                            and !about.continuousWatchDescription.isBlank() ?
+                        about.continuousWatchDescription : 'non renseigné'}"> Apprentissage constant des</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <!--SECTION FORMATION-->
+    <section id="formation" class="relative z-10 w-full py-20 bg-[#f4f1ea] text-slate-800">
+        <div class="max-w-6xl mx-auto px-6 sm:px-8">
+
+            <!--En-tete de section aligne sur le style projets-->
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-12 gap-6">
+                <div class="w-full md:w-auto text-center md:text-left">
+                    <h2 class="text-5xl sm:text-6xl font-serif text-slate-900 tracking-tight">Formation</h2>
+                </div>
+                <div class="w-full md:w-1/2 border-1-0 md:border-1-2 border-gray-400/60  pl-0 md:pl-6 py-1 test-left">
+                    <p class="text-gray-700 leading-relaxed font-normal">
+                        Mon parcours académique, mes certifications et mes obectifs d'apprentissage continus
+                    </p>
+                </div>
+            </div>
+
+            <!--objectif principal placé en en-tête de la section-->
+            <div class="mb-10 p-6 sm:p-8 bg-[#18181b] text-gray-200 rounded-xl border border-zinc-800 shadow-lg">
+                <span class="text-xs font-semibold tracking-wider text-amber-500 uppercase block mb-2">
+                    OBJECTIFS</span>
+
+                <!--titre de l'objectif et description avec ternaire-->
+                <h3 class="text-2xl font-serif text-white mb-2" th:text="${objective != null and 
+                    objective.diplome != null and !#strings.isEmpty(objective.diplome) ?
+                objective.diplome : 'Objectif non renseigné'}"> Cap vers IA</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6" th:text="${objective != null and objective.description != null 
+                    and !#strings.isEmpty(objective.description) ? objective.description:'Description non renseigné'}">
+                    Description de l'objectif...</p>
+            </div>
+
+            <!--Liste des formations -->
+            <div th:if="${formations != null and !#lists.isEmpty(formations)}" class="space-y-6">
+                <div th:each="f : ${formations}" class="bg-[#18181b] border border-zinc-800 rounded-xl p-6 sm:p-8
+                shadow-xl text-gray-200 transition duration-200 hover:border-zinc-700">
+
+                    <!--Titre, etablissement & annee-->
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+                        <div>
+                            <!--diplome avec gestion tenaire-->
+                            <h3 class=" text-xl sm:text-2xl font-serif text-white leading-tight" th:text="${f.diplome != null and !#strings.isEmpty(f.diplome) 
+                            ? f.diplome :'Diplôme non renseigné'}"> Licence Genie Logiciel</h3>
+
+                            <!--etablissement-->
+                            <p class="text-xs text-amber-500/80 font-medium mt-1" th:text="${f.etablissement != null and 
+                                !#strings.isEmpty(f.etablissement) ? 
+                            f.etablissement :'Établissement non renseigné'}"> UIG</p>
+                        </div>
+
+                        <!--Annee-->
+                        <div class="flex items-center gap-1 text-xs text-amber-500 font-mono bg-zinc-800/80
+                    px-3 py-1 rounded border border-zinc-700/50 w-fit">
+                            <span>📆</span>
+                            <span th:text="${f.annee != null and !#strings.isEmpty(f.annee) ? 
+                    f.annee :'N/A'}">2026</span>
+                        </div>
+                    </div>
+
+                    <!--Description de formation-->
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6" th:text="${f.description != null and !#strings.isEmpty(f.description) ?
+                    f.description :'Description non renseigné'}"></p>
+
+                    <!--tags sous forme de tableau/ badges-->
+                    <div th:if="${f.tags != null and !#strings.isEmpty(f.tags)}" class="flex flex-wrap gap-2">
+                        <span th:each="tags : ${#strings.arraySplit(f.tags,',')}" class="text-xs font-mono px-3 py-1 bg-zinc-800 text-amber-200/80 rounded 
+                    border border-zinc-700" th:text="${#strings.trim(tags)}">Full-Stack</span>
+                    </div>
+                    <div th:unless="${f.tags != null and !#strings.isEmpty(f.tags)}">
+                        <span class="text-xs text-gray-500 italic">Tags non renseigné</span>
+                    </div>
+                </div>
+            </div>
+
+            <!--si aucune info add-admin-->
+            <div th:if="${formations == null or #lists.isEmpty(formations)}"
+                class="bg[#18181b] border border-zinc-800 rounded-xl p-12 text-center shadow-lg">
+                <p class="text-gray-400 font-medium text-lg">Non renseigné</p>
+                <p text-gray-500 text-sm mt-1>Aucune formation n'a encore été ajoutée pour le moment</p>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <!--SECTION  PROJETS-->
+    <section id="projets" class="relative z-10 w-full py-20 bg-[#f4f1ea] text-slate-800">
+        <div class="max-w-4xl mx-auto px-6 sm:px-8">
+
+            <!--Titre + intro -->
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-20 gap-8">
+                <div>
+                    <h2 class="text-5xl sm:text-6xl font-serif text-slate-900 text-center 
+            tracking-tight">Mes Projets</h2>
+                </div>
+
+                <div class="md:w-1/2 border-1 border-gray-400/60 pl-6 py-1">
+
+                    <!--Message si pas intro-->
+                    <p class="text-xs sm:text-sm text-gray-700 leading-relaxed font-normal">Une collection de mes
+                        projets récents et réalisations. Découvrez une vue d'ensemble de mes travaux en développementet
+                        design
+                    </p>
+                </div>
+            </div>
+
+            <!----liste des projects-->
+            <div class="space-y-20" th:if="${projects != null and ! #lists.isEmpty(projects)}">
+                <div th:each="project : ${projects}" class="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
+
+                    <!--IMg principqle & odre du projet-->
+                    <div class="w-full md:w-1/2">
+                        <div class="overflow-hidden bg-[#E5E1D8] aspect-[4/3]">
+
+                            <!--image de la liste-->
+                            <img th:if="${project.images !=  null and ! #lists.isEmpty(project.images)}"
+                                th:src="@{${project.images[0].imagePath}}" th:alt="project.title"
+                                class="w-full h-full object-cover object-center">
+                        </div>
+
+                        <!--ordre du projet incremental-->
+                        <div class="mt-3 text-xs font-bold text-gray-900 tracking-wider" th:text="${project.projectOrder != null ?
+                             (project.projectOrder < 10 ? '0' + 
+                        project.projectOrder : project.projectOrder) : '01'}">01
+                        </div>
+                    </div>
+
+                    <!--text description et galerie-->
+                    <div class="w-full md:w-1/2 flex flex-col justify-between self-stretch py-1">
+                        <!--titre du projet-->
+                        <h3 class="text-3xl font-serif text-[#1A1918] mb-3" th:text="${project.title ?:
+                            'Titre non renseigné'} ">titre du project</h3>
+
+                        <!--descripton du projet-->
+                        <p class="text-gray-700 text-xs sm:text-sm leading-relaxed mb-6 font-normal" th:text="${project.description != null and !#strings.isEmpty(project.description)} ? 
+                        ${project.description} : 'Description non renseigné' ">Description du projet</p>
+                    </div>
+
+                    <!--galerie d'image-->
+                    <div th:if="${project.images != null and #lists.size(project.images) > 1}"
+                        class="pt-4 border-t border-gray-300/80">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-widest block mb-2 font-medium">
+                            Galerie ( <span th:text="${#lists.size(project.images)}">0</span>)</span>
+                        <div class="flex space-x-2 overflow-x-auto pb-1">
+                            <img th:each="img, iterStat : ${project.images}" th:src="@{${img.imagePath}}"
+                                th:data-index="${iterStat.index}" onclick="openLightbox(this)"
+                                class="w-10 h-10 object-cover border border-gray-400/50">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--msg si pas de projet enregistré-->
+        <div th:if="${projects == null or #lists.isEmpty(projects)}" class="text-center py-20">
+            <p class="text-gray-600 text-sm italic">Aucun projet disponiblepour le moment</p>
+        </div>
+    </section>
+
+
+
+    <!--SECTION CONTACT-->
+    <section id="contact" class="w-full bg-slate-50 py-20 min-h-screen flex flex-col items-center 
+    justify-center relative overflow-hidden">
+        <div class="max-w-xl w-full mx-auto px-4">
+
+            <!--En-tête cenré-->
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold text-gray-800 mb-3 font-serif">Contactez-Moi</h2>
+                <p class="text-gray-600 text-base">
+                    Avez-vous des Questions? ou une simple envie de discuter ? <br>Laissez-moi un message !
+                </p>
+            </div>
+
+            <!--formulaire thymeleaf(th)-->
+            <form id="contactForm" th:action="@{/contact}" th:object="${contactMessage}" class="space-y-5">
+
+                <!--champ NOM-->
+                <div>
+                    <label class="block text-gray-800 font-semibold mb-2 text-sm">Nom complet</label>
+                    <input type="text" th:field="*{name}" placeholder="Entrez votre nom copmlet" required class="w-full px-4 py-3 bg-white border border-gray-300 rounded-md 
+                    focus:outline-none focus:ring-2 focus:ring-orange-400
+                    focus:border-transparent transition duration-200" />
+                </div>
+
+                <!-- Champ Email-->
+                <div>
+                    <label class="block text-gray-800 font-semibold mb-2 text-sm">Adresse e-mail</label>
+                    <input type="email" th:field="*{email}" placeholder="Entrez votre adresse e-mail" required class="w-full px-4 py-3 bg-white border border-gray-300 rounded-md 
+                    focus:outline-none focus:ring-2 focus:ring-orange-400
+                    focus:border-transparent transition duration-200" />
+                </div>
+
+                <!--Champ Message-->
+                <div>
+                    <label class="block text-gray-800 font-semibold mb-2 text-sm">Message</label>
+                    <textarea th:field="*{message}" rows="5" placeholder="Saisissez votre message ici" required class="w-full px-4 py-3 bg-white border border-gray-300 rounded-md 
+                    focus:outline-none focus:ring-2 focus:ring-orange-400
+                    focus:border-transparent transition duration-200 resize-none"></textarea>
+                </div>
+
+                <!--btn d'envoi-->
+                <button type="button" onclick="envoyerFormulaire()" class="btn btn-primary 
+                  w-full py-3.5 bg-[#ff8c69] hover:bg-[#e87a58] text-white
+                 font-bold roundede-md shadow transition duration-200">Envoyer le message</button>
+                <div id="messageResult" class="mt-2 text-center font-bold"></div>
+
+                <!--message d'info bas btn-->
+                <p class="mt-4 text-xs sm:text-sm 
+                       text-blue-600 font-medium 
+                      text-center leading-relaxed">
+
+                    <i class="fa-solid fa-circle-info text-sky-500 mr-1.5"></i>
+                    Le Message est envoyé directement dans ma boite mail. Après envoi, vous
+                    receverez un accusé de réception par mail.
+                </p>
+            </form>
+
+            <!--MESSAGE DE SUCCESS-->
+            <div id="statusMessage" style="display:none; color:green;
+            margin-top: 10px; font-weight:bold;">Message envoyé avec succès ! </div>
+        </div>
+    </section>
+
+
+
+
+
+
+    <!--FOOTER-->
+    <footer class="w-full bg-black text-white py-12 relative z-10 ">
+        <div class="max-w-6xl mx-auto px-4  flex flex-col items-center">
+
+            <!---infos de contact 3collne alignees et centrees-->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center 
+            text-sm font-medium mb-10 items-center justify-center">
+
+                <!--disponibile-->
+                <div class="flex items-center justify-center space-x-3"
+                    th:if="${footerConfig != null and footerConfig.availability != null}">
+                    <span> Disponible:Freelance & stage professionnel</span>
+                    <span text-white font-semibold th:text="${footerConfig.availability}">oui</span>
+                </div>
+
+                <!---tel-->
+                <div class="flex items-center justify-center space-x-3"
+                    th:if="${footerConfig != null and footerConfig.whatsappNumber != null}">
+                    <i class="fa-solid fa-phone text-lg text-slate-300"></i>
+                    <span th:text="${footerConfig.whatsappNumber}">+237 657879056</span>
+                </div>
+
+                <!--localisation-->
+                <div class="flex items-center justify-center space-x-3"
+                    th:if="${footerConfig != null and footerConfig.localisation != null}">
+                    <i class="fa-solid fa-location-dot text-lg text-slate-300"></i>
+                    <img src="https:flagcdn.com/24x18/cm.png" alt="rounded">
+                    <span th:text="${footerConfig.localisation}">Douala,Cameroun</span>
+                </div>
+            </div>
+
+
+            <!--lien rs-->
+            <div class="flex justify-center items-center space-x-4 mb-4" th:if="${userProfile != null}">
+
+                <!--github-->
+                <a th:if="${userProfile.githubUrl != null and 
+                    !#strings.isEmpty(userProfile.githubUrl)}" th:href="${userProfile.githubUrl}" target="_blank"
+                    class="w-10 h-10 rounded-full bg-white  flex items-center
+                    justify-center hover:scale-110 
+                    transition-transform  shadow">
+                    <i class="fab fa-github text-xl text-[#181717]"></i>
+                </a>
+
+                <!--linkedin-->
+                <a th:if="${userProfile.linkedinUrl != null and 
+                    !#strings.isEmpty(userProfile.linkedinUrl)}" th:href="${userProfile.linkedinUrl}" target="_blank"
+                    class="w-10 h-10 rounded-full bg-white  flex items-center
+                    justify-center hover:scale-110 
+                    transition-transform  shadow">
+                    <i class="fab fa-linkedin-in text-xl text-[#0077b5]"></i>
+                </a>
+
+                <!--instagram-->
+                <a th:if="${userProfile.instagramUrl != null and 
+                    !#strings.isEmpty(userProfile.instagramUrl)}" th:href="${userProfile.instagramUrl}" target="_blank"
+                    class="w-10 h-10 rounded-full bg-white  flex items-center
+                    justify-center hover:scale-110 
+                    transition-transform  shadow">
+                    <i class="fab fa-instagram text-xl text-[#e4405f]"></i>
+                </a>
+            </div>
+
+            <!--copyrighttext (en bas centre)-->
+            <div class="text-center text-xs text-zinc-400">
+                <p th:text="${footerConfig != null and footerConfig.copyrighttext != null ?
+                    footerConfig.copyrighttext : '© 2026 Tous droits réservés.'}">
+                    '© 2026 Tous droits réservés.'</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!--MODELE PHOTO-->
+    <div id="modaleImage"
+        class="fixed inset-0 bg-slate-900/80 z-50 hidden flex items justify-center p-4 backdrop-blur-sm"
+        onclick="fermerModale()">
+        <div class="relative max-w-3xl max-h-[90vh]">
+            <img id="imageModaleSrc" src="" alt="Agrandissement"
+                class="rounded-2xl object-contain max-h-[85vh] mx-auto shadow-2xl">
+            <button onclick="fermerModale()"
+                class="absolute top-10 right-0 text-white text-lg font-semibold hover: text-sky-300 transition-colors">
+                <i class="fa-solid fa-xmark mr-1"></i>Fermer
+            </button>
+        </div>
+    </div>
+
+
+
+    <!--Modele Lightbox (visionneuse d'images)-->
+    <div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center p-4">
+        <!--centrer l'image-->
+        <div class="relative flex items-center justify-center w-full max-w-4xl h-[80vh]">
+
+            <!--btn fermer-->
+            <button onclick="closeLightbox()" class=" absolute -top-10 right-0 text-white text-3xl font-bold px-3 py-1 
+            hover:text-gray-400 z-50">&times;</button>
+
+            <!--image centrale et fleches de navigation-->
+            <!--fleche de gauche-->
+            <button onclick="changeImage(-1)" class="absolute -left-4 sm:left-2 z-40 bg-black/60 hover:bg-black/90 
+            text-white p-3 rounded-full text-xl transition shadow-lg">&#10094;</button>
+
+            <!--image grande taille-->
+
+            <img id="lightbox-img" class="max-h-[75vh] max-w-full w-auto h-auto object-contain rounded shadow-2xl" src=""
+                alt="Aperçu grand format" />
+
+            <!--flèche droite-->
+            <button onclick="changeImage(1)" class="absolute -right-4 sm:right-2 z-40 bg-black/60 hover:bg-black/90 
+            text-white p-3 rounded-full text-xl transition shadow-lg">&#10095;</button>
+
+            <!--compteur d'image-->
+            <div id="lightbox-counter" class="absolute -bottom-8 text-white/80 text-sm font-mono ">1 / 1</div>
+        </div>
+    </div>
+
+    <!---SCRIPT MODALE-->
+    <script>
+        function ouvrirModale(sourceImage) {
+            const modale = document.getElementById('modelImage');
+            const img = document.getElementById('imageModaleSrc');
+            img.src = sourceImage;
+            modale.classList.remove('hidden');
+        }
+
+        function fermerModale() {
+            document.getElementById('modelImage').classList.add('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const sections = document.querySelectorAll("section[id]");
+            const navLinks = document.querySelectorAll(".nav-link");
+
+            const observerOptions = {
+                root: null,
+                rootMargin: "-20% 0px -60% 0px",
+                threshold: 0 //DECLENCHE LE CHAMPS LORSQUE 60% DE LA SECTION EST VISIBLE
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute("id");
+
+                        navLinks.forEach(link => {
+                            link.classList.remove("text-red-500", "font-bold", "bg-red-50");
+                            link.classList.add("text-slate-600");
+
+                            if (link.getAttribute("href") === "#" + id) {
+
+                                link.classList.add("text-red-500", "font-bold", "bg-red-50");
+                                link.classList.remove("text-slate-600");
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach((section) =>
+                observer.observe(section));
+        });
+
+        function envoyerFormulaire() {
+            const form = document.getElementById('contactForm');
+            const resultDiv = document.getElementById('messageResult');
+
+            // recuperer les valeurs des champs
+            const data = {
+                name: form.querySelector('[name="name"]').value,
+                email: form.querySelector('[name="email"]').value,
+                message: form.querySelector('[name="message"]').value
+            };
+
+            //envoyer la resquest API SB
+            fetch('/contact-api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(async response => {
+
+
+                    const message = await response.text(); // recupere le texte de la reponse (success ou erreur)
+                    if (response.ok) {
+                        // cas success (200 ok)
+                        // on appelle la fonction de succes ici 
+                        showSuccessMessage();
+
+                        resultDiv.innerHtml = '<p style="color: green; font-weight: bold;">${message}</p>';
+                        form.reset(); // vide le formulaire
+
+
+                        // vide le formulaire pour que le visiteur puisse envoyer un autre message
+                        document.getElementById('contactForm').reset();
+                    } else {
+                        //cas erreur(400 ou 500)
+                        resultDiv.innerHtml = '<p style="color : red; font-weight: bold;">${message}</p>';
+
+                    }
+                })
+                .catch(error => {
+                    //cas erreur reseau 
+                    resultDiv.innerHTML = '<p style="color : red;"> Erreur de connexion avec le serveur.</p>';
+                    console.error('Erreur:', error);
+                });
+        }
+
+        function showSuccessMessage() {
+            const statusDiv = document.getElementById('statusMessage');
+
+            //Afficher le message
+            statusDiv.style.display = 'block'
+
+            // cache le message apres 8 secondes (8000 milisecondes)
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 8000);
+        }
+
+        //ouvrir une image
+        let currentGallery = [];
+        let currentIndex = 0;
+
+        function openLightbox(clickedImg) {
+            //récupérer toutes les images de la même galerie parent
+            const galleryContainer = clickedImg.closest('.flex');
+            if (!galleryContainer) return;
+            const images = Array.from(galleryContainer.querySelectorAll('img'));
+            currentGallery = images.map(img => img.src);
+            currentIndex = parseInt(clickedImg.getAttribute('data-index')) || 0;
+            updateLightbox();
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox) {
+                lightbox.classList.remove('hidden');
+                lightbox.classList.add('flex');
+            }
+
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox) {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+            }
+        }
+
+        function changeImage(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) {
+                currentIndex = currentGallery.length - 1;// boucle vers la dernière
+            } else if (currentIndex >= currentGallery.length) {
+                currentIndex = 0; //boucle vers la première
+            }
+            updateLightbox();
+        }
+
+        function updateLightbox() {
+            const img = document.getElementById('lightbox-img');
+            const counter = document.getElementById('lightbox-counter');
+            if (img) img.src =
+                currentGallery[currentIndex];
+            if (counter)
+                counter.textContent = `${currentIndex + 1} / ${currentGallery.length} `;
+        }
+
+        // supprot des touches du clavier (Échap , Flèche gauche, Flèche droite)
+        document.addEventListener('keydown', function (event) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox && !lightbox.classList.contains('hidden')) {
+                if (event.key === 'ArrowLeft') changeImage(-1);
+                if (event.key === 'ArrowRight') changeImage(1);
+                if (event.key === 'Escape') closeLightbox();
+            }
+        });
+
+        //script pour ouvrir et fermer le menu en mobile
+        function toggleMenu() {
+            const menuLinks = document.getElementById('menu-links');
+            if (menuLinks) {
+                menuLinks.classList.toggle('hidden');
+                menuLinks.classList.toggle('flex');
+            }
+        }
+    </script>
+</body>
+
+</html>
