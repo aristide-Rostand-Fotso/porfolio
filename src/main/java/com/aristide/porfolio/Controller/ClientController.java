@@ -57,7 +57,7 @@ public class ClientController {
 
         // PROFIL UTILISATEUR
         Optional<UserProfile> profileOpt = porfolioService.getUserProfile();
-        UserProfile userProfile = profileOpt.orElse(null);
+        UserProfile userProfile = profileOpt.orElse(new UserProfile());
         model.addAttribute("userProfile", userProfile);
 
         // CV UNIQUE

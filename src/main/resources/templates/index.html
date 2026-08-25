@@ -97,14 +97,15 @@
                 <h1 class="text-sm sm:text-2xl md:text-5xl lg:text-6xl font-extrabold
                  text-slate-900 leading-tight mb-2 md:mb-4 tracking-tight
                     ">Salut, je suis
-                    <span class="text-sky-500" th:text="${userProfile.fullName}">
+                    <span class="text-sky-500" th:text="${userProfile?.fullName} ?: 'Aristide Fotso' ">
                         Aristide fotso
                     </span>
-                    <span class="text-slate-900" th:text="${userProfile.title}">Genie logiciel/Software Engineer</span>
+                    <span class="text-slate-900" th:text="${userProfile?.title} ?: 'Genie logiciel/Software Engineer' ">Genie logiciel/Software Engineer</span>
                 </h1>
 
                 <p class="text-[10px] sm:text-base md:text-2xl text-sky-500 font-semibold 
-                max-w-xl mb-3 md:mb-8 leading-relaxed text-justify" th:text="${userProfile.shortBio}">Developpeur
+                max-w-xl mb-3 md:mb-8 leading-relaxed text-justify" th:text="${userProfile?.shortBio} ?:'Developpeur
+                    Fullstack' ">Developpeur
                     Fullstack</p>
 
                 <!--BTN D'ACTION-->
