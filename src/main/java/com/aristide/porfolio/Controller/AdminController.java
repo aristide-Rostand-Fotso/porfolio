@@ -31,6 +31,7 @@ import com.aristide.porfolio.Repository.FooterConfigRepository;
 import com.aristide.porfolio.Repository.FormationRepository;
 import com.aristide.porfolio.Repository.UserProfileRepository;
 import com.aristide.porfolio.Service.AboutSectionService;
+import com.aristide.porfolio.Service.CloudinaryService;
 import com.aristide.porfolio.Service.FormationService;
 import com.aristide.porfolio.Service.ProjectService;
 
@@ -47,6 +48,7 @@ public class AdminController {
     private final FooterConfigRepository footerConfigRepository;
     private final FormationService formationService;
     private final FormationRepository formationRepository;
+    private final CloudinaryService cloudinaryService;
 
     // CONSTRUTEUR PREND EN PARAMETRE LES INJECTIONS GEREES PAR SPTING ET LES
     // ALIGNES AUX ATTRIBUTS DE LA CLASSE GRACE AUX MOT CLES 'this'
@@ -55,7 +57,7 @@ public class AdminController {
             AboutSectionService aboutService, ProjectService projectService,
             AdminConfigRepository adminConfigRepository,
             FooterConfigRepository footerConfigRepository, FormationService formationService,
-            FormationRepository formationRepository) {
+            FormationRepository formationRepository, CloudinaryService cloudinaryService) {
 
         this.userProfileRepository = userProfileRepository;
         this.curriculumViteaRepository = curriculumViteaRepository;
@@ -65,6 +67,7 @@ public class AdminController {
         this.footerConfigRepository = footerConfigRepository;
         this.formationService = formationService;
         this.formationRepository = formationRepository;
+        this.cloudinaryService = cloudinaryService;
     }
 
     // AFFICHER LA PAGE ADMIN
@@ -124,10 +127,7 @@ public class AdminController {
             @RequestParam(value = "cvTitle", required = false) String cvTitle,
             RedirectAttributes redirectAttributes) {
         try {
-            Path uploadPath = Paths.get("uploads").toAbsolutePath().normalize();
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
+            
             // DOSSIER OU SERONT ENREGISTRER PP ET CV
             // RECUPERER L'ENTITE SUAVEGARDER EN BD POUR GARDER LA MEME ID
             UserProfile existingProfile = userProfileRepository.findAll().stream()
@@ -141,31 +141,25 @@ public class AdminController {
             existingProfile.setLinkedinUrl(profileForm.getLinkedinUrl());
             existingProfile.setInstagramUrl(profileForm.getInstagramUrl());
 
-            // traitement de la pp
+            // traitement de la pp / ipload vers Cloudinary
             if (photoFile != null && !photoFile.isEmpty()) {
 
-                String photoName = System.currentTimeMillis() + "_"
-                        + photoFile.getOriginalFilename().replaceAll("[^a-zA-Z0-9._-]", "_");
-                Path targetLocation = uploadPath.resolve(photoName);
-                Files.copy(photoFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-                existingProfile.setProfilePhotopath("/uploads/" + photoName);
+                String photoUrl = cloudinaryService.uploadFile(photoFile);
+                existingProfile.setProfilePhotopath(photoUrl);
             }
 
             // SAUCEGARDE DES INFOS DU PRFIL(nom,titre)
             userProfileRepository.save(existingProfile);
 
-            // traitement du fichier cv
+            // traitement du fichier cv vers cloudinary
             if (cvFile != null && !cvFile.isEmpty()) {
-                String cvFileName = System.currentTimeMillis() + "_"
-                        + cvFile.getOriginalFilename().replaceAll("[^a-zA-Z0-9.-]", "_");
-                Path targetLocation = uploadPath.resolve(cvFileName);
-                Files.copy(cvFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+                String cvUrl = cloudinaryService.uploadFile(cvFile);
                 CurriculumVitea newCv = curriculumViteaRepository.findAll().stream()
                         .findFirst()
                         .orElse(new CurriculumVitea());
 
                 newCv.setTitle(cvTitle != null && !cvTitle.isBlank() ? cvTitle : "CV Aristide");
-                newCv.setFilePath("/uploads/" + cvFileName);
+                newCv.setFilePath(cvUrl);
                 newCv.setUploadDate(LocalDateTime.now());
                 curriculumViteaRepository.save(newCv);
             }
@@ -278,7 +272,7 @@ public class AdminController {
     public String deleteFormation(@PathVariable("id") Long id,
             RedirectAttributes redirectAttributes) {
         formationRepository.deleteById(id);
-        redirectAttributes.addFlashAttribute("successMMessage", "Formation enregistrées avec succès !");
+        redirectAttributes.addFlashAttribute("successMMessage", "Formation supprimée avec succès !");
 
         return "redirect:/admi-237-n#formations";
     }

@@ -1,5 +1,6 @@
 package com.aristide.porfolio.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -16,12 +17,14 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final FileStorageService fileStorageService;
+    private final CloudinaryService cloudinaryService;
 
     public ProjectService(ProjectRepository projectRepository,
-         FileStorageService fileStorageService){
+         FileStorageService fileStorageService, CloudinaryService cloudinaryService){
             
         this.projectRepository = projectRepository;
         this.fileStorageService  = fileStorageService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     public List <Project> getAllProjectsOrdered(){
@@ -53,11 +56,15 @@ public class ProjectService {
         //SAUVEGARDE DES IMAGES 
         for (MultipartFile file : imageFiles){
             if (!file.isEmpty()) {
-                String imagePath = fileStorageService.storeFile(file, "project");
-                ProjectImage projectImage = new ProjectImage();
-                projectImage.setImagePath(imagePath);
-                projectImage.setProject(project);
-                project.getImages().add(projectImage);
+                try{
+                    String imageUrl = cloudinaryService.uploadFile(file);
+                    ProjectImage projectImage = new ProjectImage();
+                    projectImage.setImagePath(imageUrl);
+                    projectImage.setProject(project);
+                    project.getImages().add(projectImage);
+                } catch (IOException e) {
+                    throw new RuntimeException("Erreur lors de l'upload vres Cloudinary", e);
+                }
             }
         }
         return projectRepository.save(project);
@@ -70,9 +77,9 @@ public class ProjectService {
         IllegalArgumentException("Projets introuvable id: " + id));
 
         //SUPPRESSION DES FICHIERS IMAGES DE LA BD
-        for (ProjectImage image : project.getImages()){
-            fileStorageService.deleteFile(image.getImagePath());
-        }
+        //for (ProjectImage image : project.getImages()){
+          //  fileStorageService.deleteFile(image.getImagePath());
+       // }
         //suppression en bd
         projectRepository.delete(project);
     }

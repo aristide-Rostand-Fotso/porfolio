@@ -23,7 +23,7 @@ public class SecurityConfig {
         .headers(headers -> headers 
             .frameOptions(frame -> frame.sameOrigin())
         )
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/admi-237-n/**")) // DESACTIVE LA PROTECTION CSRF POUR LES TESTS, A REACTIVER EN PROD
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/admi-237-n/**", "/contact-api/**")) // DESACTIVE LA PROTECTION CSRF POUR LES TESTS, A REACTIVER EN PROD
                 .authorizeHttpRequests(auth -> auth
 
                         // PROTEGE L'ADMINISTRATION DU SITE, SEULEMENT LES UTILISATEURS AUTHENTIFIES
