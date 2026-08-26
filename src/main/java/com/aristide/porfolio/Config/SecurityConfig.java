@@ -23,13 +23,13 @@ public class SecurityConfig {
         .headers(headers -> headers 
             .frameOptions(frame -> frame.sameOrigin())
         )
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**", "/contact-api")) // DESACTIVE LA PROTECTION CSRF POUR LES TESTS, A REACTIVER EN PROD
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/admi-237-n/**")) // DESACTIVE LA PROTECTION CSRF POUR LES TESTS, A REACTIVER EN PROD
                 .authorizeHttpRequests(auth -> auth
 
                         // PROTEGE L'ADMINISTRATION DU SITE, SEULEMENT LES UTILISATEURS AUTHENTIFIES
                         // PEUVENT
                         // ACCEDER A CETTE PARTIE
-                        .requestMatchers("/admi-237-n/**", "/h2-console/**").hasAuthority("ADMIN")
+                        .requestMatchers("/admi-237-n/**").hasAnyAuthority("ADMIN")
                         
 
                         // LE SITE PUBLIC RESTE 100% ACCESSIBLE A TOUS/ PUBLIC
