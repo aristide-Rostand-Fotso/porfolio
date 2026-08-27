@@ -1,1 +1,0 @@
-INSERT INTO utilisateur (username, password, role) VALUES ('aristAdmin23', '$2y$10$BBLtRCZznbOAgfusjqbBpujHWfmso8iNJVFxKas7N0nAN92N87Wae', 'ADMIN'); 
