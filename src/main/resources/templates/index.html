@@ -72,7 +72,8 @@
             </div>
 
             <div class="flex items-center gap-2">
-                <a th:if="${cvExist}" th:href="@{/cv/download}" class="px-4 py-2rounded-full bg-sky-500
+                <a th:if="${cvExist}" th:href="${cv}" target="_blank" 
+                class="px-4 py-2rounded-full bg-sky-500
                     hover:bg-sky-600 text-white font-semibold text-xs sm:text-sm transition-all 
                     shadow-md shadow-sky-500/20 flex items-center gap-2">
                     <i class="fa-solid fa-file-arrow-down"></i>
@@ -100,7 +101,9 @@
                     <span class="text-sky-500" th:text="${userProfile?.fullName} ?: 'Aristide Fotso' ">
                         Aristide fotso
                     </span>
-                    <span class="text-slate-900" th:text="${userProfile?.title} ?: 'Genie logiciel/Software Engineer' ">Genie logiciel/Software Engineer</span>
+                    <span class="text-slate-900"
+                        th:text="${userProfile?.title} ?: 'Genie logiciel/Software Engineer' ">Genie logiciel/Software
+                        Engineer</span>
                 </h1>
 
                 <p class="text-[10px] sm:text-base md:text-2xl text-sky-500 font-semibold 
@@ -110,7 +113,8 @@
 
                 <!--BTN D'ACTION-->
                 <div class="flex flex-wrap items-center justify-start gap-2 md:gap-4 mb-4 md:mb-8">
-                    <a th:if="${cv != null}" th:href="@{/cv/download}" class="px-3 py-1.5 md:px-6 md:y-3 
+                    <a th:if="${cv != null}" th:href="${cv}" target="_blank"
+                     class="px-3 py-1.5 md:px-6 md:y-3 
                     rounded-full bg-sky-500 hover:bg-sky-600 
                     text-white font-semibold text-[10px] sm:text-xs md:text-sm transition-all 
                         shadow-lg shadow-sky-500/25 flex items-center gap-1.5">
@@ -686,7 +690,7 @@
             <div class="text-center text-xs text-zinc-400">
                 <p th:text="${footerConfig != null and footerConfig.copyrighttext != null ?
                     footerConfig.copyrighttext : '© 2026 Tous droits réservés.'}">
-                    '© 2026 Tous droits porfolio  réservés.'</p>
+                    '© 2026 Tous droits porfolio réservés.'</p>
             </div>
         </div>
     </footer>
@@ -724,8 +728,8 @@
 
             <!--image grande taille-->
 
-            <img id="lightbox-img" class="max-h-[75vh] max-w-full w-auto h-auto object-contain rounded shadow-2xl" src=""
-                alt="Aperçu grand format" />
+            <img id="lightbox-img" class="max-h-[75vh] max-w-full w-auto h-auto object-contain rounded shadow-2xl"
+                src="" alt="Aperçu grand format" />
 
             <!--flèche droite-->
             <button onclick="changeImage(1)" class="absolute -right-4 sm:right-2 z-40 bg-black/60 hover:bg-black/90 
