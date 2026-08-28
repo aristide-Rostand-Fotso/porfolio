@@ -93,26 +93,13 @@ public class ClientController {
 
     // TELECHARGEMENT DU CV
     @GetMapping("/cv/download")
-    public ResponseEntity<Resource> downloadCV() {
+    public String downloadCV() {
         Optional<CurriculumVitea> cvOpt = porfolioService.getCurriculumVitea();
         if (cvOpt.isEmpty() || cvOpt.get().getFilePath() == null) {
-            return ResponseEntity.notFound().build();
+           
+       return "redirect:/";
         }
-        try {
-            Path filePath = Paths.get(cvOpt.get().getFilePath().replaceFirst("^/", ""));
-            Resource resource = new UrlResource(filePath.toUri());
-
-            if (resource.exists() || resource.isReadable()) {
-                return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).header(
-                        "CONTENT_DISPOSITION", "attachment; filename=\"" + cvOpt.get().getTitle()
-                                + ".pdf\"")
-                        .body(resource);
-
-            }
-        } catch (MalformedURLException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-        return ResponseEntity.notFound().build();
+        return "redirect:" + cvOpt.get().getFilePath();
     }
 
     // TRAITEMENT DU FORMULAIRE DE CONTACT
