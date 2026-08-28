@@ -26,7 +26,7 @@ public class CloudinaryService {
         Map uploadResult = cloudinary.uploader().
         upload(file.getBytes(),
     ObjectUtils.asMap(
-        "resource_type","auto" // gere auto les images et les documents 
+        "resource_type","raw" // gere auto les images et les documents tels quelles sont
     ));
 
     // Retourne L'url securiaee HTTPS du fichier heberge
