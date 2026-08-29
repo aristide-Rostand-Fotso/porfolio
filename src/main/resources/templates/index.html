@@ -647,8 +647,11 @@
                 <div class="flex items-center justify-center space-x-3"
                     th:if="${footerConfig != null and footerConfig.localisation != null}">
                     <i class="fa-solid fa-location-dot text-lg text-slate-300"></i>
-                    <img src="https:flagcdn.com/24x18/cm.png" alt="rounded">
-                    <span th:text="${footerConfig.localisation}">Douala,Cameroun</span>
+                
+                        <img th:src="@{/images/cm.png}" class="rounded w-6 h-4 object-cover inline-block">
+                        <span th:text="${about != null ?
+                         about.birthPlaceDisplay : 'Non renseigné'}"> Cameroun</span>
+                    </p>
                 </div>
             </div>
 
