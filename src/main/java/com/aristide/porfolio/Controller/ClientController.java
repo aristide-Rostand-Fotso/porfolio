@@ -6,8 +6,10 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aristide.porfolio.Model.ContactMessage;
@@ -93,13 +96,26 @@ public class ClientController {
 
     // TELECHARGEMENT DU CV
     @GetMapping("/cv/download")
-    public String downloadCV() {
-        Optional<CurriculumVitea> cvOpt = porfolioService.getCurriculumVitea();
+    public ResponseEntity<byte[]> downloadCV() {
+       try{
+         Optional<CurriculumVitea> cvOpt = porfolioService.getCurriculumVitea();
         if (cvOpt.isEmpty() || cvOpt.get().getFilePath() == null) {
            
-       return "redirect:/";
+       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return "redirect:" + cvOpt.get().getFilePath();
+        String fileUrl = cvOpt.get().getFilePath();
+        byte[] fileBytes = new RestTemplate().getForObject(fileUrl,byte[].class);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.valueOf("application/pdf"));
+
+        headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=CV_aristide.pdf");
+
+        return ResponseEntity.ok().headers(headers).body(fileBytes);
+
+       } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+       }
     }
 
     // TRAITEMENT DU FORMULAIRE DE CONTACT

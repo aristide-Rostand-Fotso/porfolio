@@ -29,9 +29,8 @@ public class CloudinaryService {
         "resource_type","auto" // gere auto les images et les documents 
     ));
 
-    // Retourne L'url et ajoute le nom personalisé pour le telechatgement
-   String originalUrl = uploadResult.get("secure_url").toString();
-   return originalUrl.replace("/upload/","/upload/fl_inline:CV_aristide/");
+    // Retourne L'url securiaee HTTPS du fichier heberge
+    return uploadResult.get("secure_url").toString();
     }
 
 }
